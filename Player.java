@@ -6,9 +6,18 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * the Player class represents players for mafia
+ * @author ilia
+ * @version 1.0
+ */
+
 public class Player {
 
-
+    /**
+     * using this method client(player) can connect
+     * to server(server_God)
+     */
     public void connect(){
         try {
             System.out.println("enter port:");
@@ -30,10 +39,9 @@ public class Player {
             //String server;
             while (true){
                 dataOutputStream.writeUTF(input);
-                if (input.equals("exit")){
+                if (input.equals("exit") || input.equals("thanks for playing :)")){
                     break;
                 }
-                //server = dataInputStream.readUTF();
                 System.out.println(dataInputStream.readUTF());
                 input = scanner.nextLine();
             }

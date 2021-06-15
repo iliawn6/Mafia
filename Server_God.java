@@ -21,21 +21,34 @@ import java.util.concurrent.Executors;
 
 public class Server_God {
 
+
+    //fields
+
     private ArrayList<String> players;
     //in hashmap shomare bazikon az 1 ta 10 + naghshe har bazikon ro darad
     private HashMap<Integer,Roles> playerroles;
     //in hashmap name bazikon + naghshe har bazikon ro darad
     private HashMap<String,String> playersNameRoles;
     private IntObject votesToBeginVoting = new IntObject(0);
-    private boolean printVotingResault = false;
+    private boleanObject printVotingResault;
     private IntObject voteAttendant;
     private HashMap<String,Integer> votingSystem;
     private IntObject maxNumberOfVote;
     private ArrayList<String> alive;
     private ArrayList<String> deadsRoles;
     private boleanObject night;
+    private String docHeal;
+    private String docLecHeal;
+    private String mafiaShot;
+    private String sniperShot;
+    private String psychoAct;
+    private boleanObject printNightResault;
+    private String playerExitInVote;
+    private HashMap<String,String> firstNameSecRole;
 
 
+
+    //constructor
 
     public Server_God(){
         players = new ArrayList<String>();
@@ -47,6 +60,14 @@ public class Server_God {
         alive = new ArrayList<String>();
         deadsRoles = new ArrayList<String>();
         night = new boleanObject(false);
+        printNightResault = new boleanObject(false);
+        printVotingResault = new boleanObject(false);
+        firstNameSecRole = new HashMap<String,String>();
+        sniperShot = "none";
+        docHeal = "none";
+        docLecHeal = "none";
+        mafiaShot = "none";
+        psychoAct = "none";
     }
 
 
@@ -63,6 +84,10 @@ public class Server_God {
     public enum Roles{Mafia,GodFather,Dr_lecture,Doctor,Sniper,psychologist,cops,citizen,mayor,die_hard}
 
 
+    /**
+     * this method shuffle the numbers between 1 to 10 for distributing roles
+     * @return list of number between 1 to 10 without arrange
+     */
     public ArrayList<Integer> Randomgenerator(){
         ArrayList<Integer> first = new ArrayList<Integer>();
         ArrayList<Integer> res = new ArrayList<Integer>();
@@ -89,6 +114,9 @@ public class Server_God {
     }
 
 
+    /**
+     * this method distributes roles between players
+     */
 
     public void distributingRoles(){
         Roles roles[] = Roles.values();
@@ -115,9 +143,9 @@ public class Server_God {
             try {
                 ServerSocket  serverSocket = new ServerSocket(9000);
                 System.out.println(ANSI_CYAN + "------welcome to mafia------\n" + ANSI_RESET);
-                System.out.println(ANSI_CYAN + "waiting for players...  0/4" + ANSI_RESET);
+                System.out.println(ANSI_CYAN + "waiting for players...  0/10" + ANSI_RESET);
                 //int count = 0;
-                for (int i = 0; i < 4 ; i++){
+                for (int i = 0; i < 10 ; i++){
 
                     Socket socket = serverSocket.accept();
 
@@ -132,9 +160,11 @@ public class Server_God {
 
                     Thread thread = new Thread(new GameHandler(socket,players,playerroles.get(i+1).toString()
                             ,playersNameRoles,votesToBeginVoting,printVotingResault
-                            ,voteAttendant,votingSystem,maxNumberOfVote,alive,deadsRoles,night));
+                            ,voteAttendant,votingSystem,maxNumberOfVote,alive,deadsRoles,night,
+                             docHeal, docLecHeal,mafiaShot,sniperShot,
+                            psychoAct,printNightResault,playerExitInVote,firstNameSecRole));
                     thread.start();
-                    System.out.println(ANSI_CYAN + "players:" + (i+1) + "/4" + ANSI_RESET);
+                    System.out.println(ANSI_CYAN + "players:" + (i+1) + "/10" + ANSI_RESET);
                     /*
                     if (i == 3){
                         executorService.shutdown();
